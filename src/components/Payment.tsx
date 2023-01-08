@@ -3,6 +3,7 @@ import { useRoundUp } from "../hooks/useRoundUp";
 
 import { PaymentMethods } from "./PaymentMethods";
 import { formatCheckboxLabel } from "../utils";
+import { DonationCheckbox } from "./DonationCheckbox";
 
 export const Payment = ({ amount }: { amount: number }) => {
   const { paymentMethods } = usePaymentMethods();
@@ -13,16 +14,11 @@ export const Payment = ({ amount }: { amount: number }) => {
     <div>
       <h3>Payment</h3>
       <PaymentMethods options={paymentMethods} />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            onChange={updateAgreeToDonate}
-            checked={agreeToDonate}
-          />
-          <p>{formatCheckboxLabel(agreeToDonate, tip)}</p>
-        </label>
-      </div>
+      <DonationCheckbox
+        onChange={updateAgreeToDonate}
+        checked={agreeToDonate}
+        content={formatCheckboxLabel(agreeToDonate, tip)}
+      />
       <button>${total}</button>
     </div>
   );
