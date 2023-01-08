@@ -1,4 +1,4 @@
-import { usePaymentMethods } from "./usePaymentMethods";
+import { usePaymentMethods } from "../hooks/usePaymentMethods";
 import { PaymentMethods } from "./PaymentMethods";
 
 export const Payment = ({ amount }: { amount: number }) => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { RemotePaymentMethod } from "./types";
-import {PaymentMethod} from "./PaymentMethod";
+import { RemotePaymentMethod } from "../types";
+import {PaymentMethod} from "../models/PaymentMethod";
 
 const payInCash = new PaymentMethod({ name: "cash" });
 
