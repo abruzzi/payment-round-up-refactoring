@@ -11,7 +11,7 @@ type LocalPaymentMethod = {
   label: string;
 };
 
-export const Payment = ({ amount }: { amount: number }) => {
+const usePaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<LocalPaymentMethod[]>(
     []
   );
@@ -37,6 +37,14 @@ export const Payment = ({ amount }: { amount: number }) => {
 
     fetchPaymentMethods();
   });
+
+  return {
+    paymentMethods,
+  };
+};
+
+export const Payment = ({ amount }: { amount: number }) => {
+  const { paymentMethods } = usePaymentMethods();
 
   return (
     <div>
