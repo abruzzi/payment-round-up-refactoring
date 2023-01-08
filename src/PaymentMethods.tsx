@@ -1,10 +1,6 @@
-import { LocalPaymentMethod } from "./types";
+import { PaymentMethod } from "./PaymentMethod";
 
-export const PaymentMethods = ({
-  options,
-}: {
-  options: LocalPaymentMethod[];
-}) => (
+export const PaymentMethods = ({ options }: { options: PaymentMethod[] }) => (
   <>
     {options.map((method) => (
       <label key={method.provider}>
@@ -12,7 +8,7 @@ export const PaymentMethods = ({
           type="radio"
           name="payment"
           value={method.provider}
-          defaultChecked={method.provider === "cash"}
+          defaultChecked={method.isDefaultMethod}
         />
         <span>{method.label}</span>
       </label>

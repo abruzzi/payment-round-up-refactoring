@@ -1,8 +1,24 @@
 import { useEffect, useState } from "react";
-import { LocalPaymentMethod, RemotePaymentMethod } from "./types";
+import { RemotePaymentMethod } from "./types";
+import {PaymentMethod} from "./PaymentMethod";
+
+const payInCash = new PaymentMethod({ name: "cash" });
+
+const convertPaymentMethods = (methods: RemotePaymentMethod[]) => {
+  if (methods.length === 0) {
+    return [];
+  }
+
+  const extended: PaymentMethod[] = methods.map(
+    (method) => new PaymentMethod(method)
+  );
+  extended.push(payInCash);
+
+  return extended;
+};
 
 export const usePaymentMethods = () => {
-  const [paymentMethods, setPaymentMethods] = useState<LocalPaymentMethod[]>(
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(
     []
   );
 
@@ -13,16 +29,7 @@ export const usePaymentMethods = () => {
       const response = await fetch(url);
       const methods: RemotePaymentMethod[] = await response.json();
 
-      if (methods.length > 0) {
-        const extended: LocalPaymentMethod[] = methods.map((method) => ({
-          provider: method.name,
-          label: `Pay with ${method.name}`,
-        }));
-        extended.push({ provider: "cash", label: "Pay in cash" });
-        setPaymentMethods(extended);
-      } else {
-        setPaymentMethods([]);
-      }
+      setPaymentMethods(convertPaymentMethods(methods));
     };
 
     fetchPaymentMethods();
