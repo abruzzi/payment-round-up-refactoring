@@ -3,3 +3,5 @@ export type RemotePaymentMethod = {
   countryCode?: string;
   id?: string;
 };
+
+export type CountryCode = "AU" | "JP" | "DK";

@@ -2,10 +2,11 @@ import { usePaymentMethods } from "../hooks/usePaymentMethods";
 import { useRoundUp } from "../hooks/useRoundUp";
 
 import { PaymentMethods } from "./PaymentMethods";
-import { formatCheckboxLabel } from "../utils";
+import {formatCheckboxLabel, getCurrencySign} from "../utils";
 import { DonationCheckbox } from "./DonationCheckbox";
+import {CountryCode} from "../types";
 
-export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countryCode?: string }) => {
+export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countryCode?: CountryCode }) => {
   const { paymentMethods } = usePaymentMethods();
 
   const { total, tip, agreeToDonate, updateAgreeToDonate } = useRoundUp(amount, countryCode);
@@ -20,8 +21,7 @@ export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countr
         content={formatCheckboxLabel(agreeToDonate, tip, countryCode)}
       />
       <button>
-        {countryCode === "JP" ? "¥" : "$"}
-        {total}
+        {`${getCurrencySign(countryCode)}${total}`}
       </button>
     </div>
   );

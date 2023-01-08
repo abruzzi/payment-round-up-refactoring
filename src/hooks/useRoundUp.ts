@@ -1,20 +1,16 @@
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
+import { algorithmMap, calculateTipFor } from "../utils";
+import { CountryCode } from "../types";
 
-export const useRoundUp = (amount: number, countryCode: string) => {
+export const useRoundUp = (amount: number, countryCode: CountryCode) => {
   const [agreeToDonate, setAgreeToDonate] = useState<boolean>(false);
 
-  const {total, tip} = useMemo(
+  const { total, tip } = useMemo(
     () => ({
-      total: agreeToDonate
-        ? countryCode === "JP"
-          ? Math.floor(amount / 100 + 1) * 100
-          : Math.floor(amount + 1)
-        : amount,
-      tip: parseFloat(((countryCode === "JP"
-        ? Math.floor(amount / 100 + 1) * 100
-        : Math.floor(amount + 1)) - amount ).toPrecision(10)),
+      total: agreeToDonate ? algorithmMap[countryCode](amount) : amount,
+      tip: calculateTipFor(algorithmMap[countryCode])(amount),
     }),
-    [amount, agreeToDonate]
+    [agreeToDonate, countryCode, amount]
   );
 
   const updateAgreeToDonate = () => {
