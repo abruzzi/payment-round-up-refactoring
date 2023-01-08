@@ -2,14 +2,27 @@ import { usePaymentMethods } from "../hooks/usePaymentMethods";
 import { useRoundUp } from "../hooks/useRoundUp";
 
 import { PaymentMethods } from "./PaymentMethods";
-import {formatCheckboxLabel, getCurrencySign} from "../utils";
+import {
+  formatButtonLabel,
+  formatCheckboxLabel,
+  roundUpToNearestInteger,
+} from "../utils";
 import { DonationCheckbox } from "./DonationCheckbox";
-import {CountryCode} from "../types";
+import { PaymentStrategy } from "../models/PaymentStrategy";
 
-export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countryCode?: CountryCode }) => {
+export const Payment = ({
+  amount,
+  strategy = new PaymentStrategy("$", roundUpToNearestInteger),
+}: {
+  amount: number;
+  strategy?: PaymentStrategy;
+}) => {
   const { paymentMethods } = usePaymentMethods();
 
-  const { total, tip, agreeToDonate, updateAgreeToDonate } = useRoundUp(amount, countryCode);
+  const { total, tip, agreeToDonate, updateAgreeToDonate } = useRoundUp(
+    amount,
+    strategy
+  );
 
   return (
     <div>
@@ -18,11 +31,9 @@ export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countr
       <DonationCheckbox
         onChange={updateAgreeToDonate}
         checked={agreeToDonate}
-        content={formatCheckboxLabel(agreeToDonate, tip, countryCode)}
+        content={formatCheckboxLabel(agreeToDonate, tip, strategy)}
       />
-      <button>
-        {`${getCurrencySign(countryCode)}${total}`}
-      </button>
+      <button>{formatButtonLabel(strategy, total)}</button>
     </div>
   );
 };

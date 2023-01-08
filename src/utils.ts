@@ -1,4 +1,5 @@
 import { CountryCode } from "./types";
+import {PaymentStrategy} from "./models/PaymentStrategy";
 
 const currencySignMap = {
   JP: "¥",
@@ -12,12 +13,16 @@ export const getCurrencySign = (countryCode: CountryCode) =>
 const formatCheckboxLabel = (
   agreeToDonate: boolean,
   tip: number,
-  countryCode: CountryCode
+  strategy: PaymentStrategy
 ) => {
   return agreeToDonate
     ? "Thanks for your donation."
-    : `I would like to donate ${getCurrencySign(countryCode)}${tip} to charity.`;
+    : `I would like to donate ${strategy.getCurrencySign()}${tip} to charity.`;
 };
+
+export const formatButtonLabel = (strategy: PaymentStrategy, total: number) =>
+  `${strategy.getCurrencySign()}${total}`;
+
 
 export { formatCheckboxLabel };
 

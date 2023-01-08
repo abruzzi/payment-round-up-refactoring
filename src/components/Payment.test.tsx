@@ -1,5 +1,7 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import { Payment } from "./Payment";
+import {PaymentStrategy} from "../models/PaymentStrategy";
+import {roundUpToNearestHundred} from "../utils";
 
 describe("Payment", () => {
   it("renders payment title", () => {
@@ -34,7 +36,7 @@ describe("Payment", () => {
 
   describe('japan market', () => {
     it('shows correct amount when user selected to donate', () => {
-      render(<Payment amount={3312} countryCode="JP" />);
+      render(<Payment amount={3312} strategy={new PaymentStrategy("¥", roundUpToNearestHundred)} />);
 
       const select = screen.getByText('I would like to donate ¥88 to charity.');
       expect(select).toBeInTheDocument();
