@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import { Payment } from "./Payment";
 
 describe("Payment", () => {
@@ -11,6 +11,26 @@ describe("Payment", () => {
     render(<Payment amount={19.9} />);
     expect(screen.getByText("$19.9")).toBeInTheDocument();
   });
+
+  it('shows thanks when user selected donation', () => {
+    render(<Payment amount={19.9} />);
+
+    const select = screen.getByText('I would like to donate $0.1 to charity.');
+    expect(select).toBeInTheDocument();
+
+    fireEvent.click(select);
+    expect(screen.getByText('Thanks for your donation.')).toBeInTheDocument();
+  })
+
+  it('shows correct amount when user selected to donate', () => {
+    render(<Payment amount={19.9} />);
+
+    const select = screen.getByText('I would like to donate $0.1 to charity.');
+    expect(select).toBeInTheDocument();
+
+    fireEvent.click(select);
+    expect(screen.getByText('$20')).toBeInTheDocument();
+  })
 
   describe("payment methods from remote", () => {
     afterEach(() => {
