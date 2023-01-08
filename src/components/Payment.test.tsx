@@ -32,6 +32,18 @@ describe("Payment", () => {
     expect(screen.getByText('$20')).toBeInTheDocument();
   })
 
+  describe('japan market', () => {
+    it('shows correct amount when user selected to donate', () => {
+      render(<Payment amount={3312} countryCode="JP" />);
+
+      const select = screen.getByText('I would like to donate ¥88 to charity.');
+      expect(select).toBeInTheDocument();
+
+      fireEvent.click(select);
+      expect(screen.getByText('¥3400')).toBeInTheDocument();
+    })
+  })
+
   describe("payment methods from remote", () => {
     afterEach(() => {
       jest.clearAllMocks();

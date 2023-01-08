@@ -5,10 +5,10 @@ import { PaymentMethods } from "./PaymentMethods";
 import { formatCheckboxLabel } from "../utils";
 import { DonationCheckbox } from "./DonationCheckbox";
 
-export const Payment = ({ amount }: { amount: number }) => {
+export const Payment = ({ amount, countryCode = "AU" }: { amount: number, countryCode?: string }) => {
   const { paymentMethods } = usePaymentMethods();
 
-  const { total, tip, agreeToDonate, updateAgreeToDonate } = useRoundUp(amount);
+  const { total, tip, agreeToDonate, updateAgreeToDonate } = useRoundUp(amount, countryCode);
 
   return (
     <div>
@@ -17,9 +17,12 @@ export const Payment = ({ amount }: { amount: number }) => {
       <DonationCheckbox
         onChange={updateAgreeToDonate}
         checked={agreeToDonate}
-        content={formatCheckboxLabel(agreeToDonate, tip)}
+        content={formatCheckboxLabel(agreeToDonate, tip, countryCode)}
       />
-      <button>${total}</button>
+      <button>
+        {countryCode === "JP" ? "¥" : "$"}
+        {total}
+      </button>
     </div>
   );
 };
