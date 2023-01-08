@@ -1,16 +1,6 @@
-import { CountryCode } from "./types";
 import {PaymentStrategy} from "./models/PaymentStrategy";
 
-const currencySignMap = {
-  JP: "¥",
-  DK: "Kr.",
-  AU: "$",
-};
-
-export const getCurrencySign = (countryCode: CountryCode) =>
-  currencySignMap[countryCode];
-
-const formatCheckboxLabel = (
+export const formatCheckboxLabel = (
   agreeToDonate: boolean,
   tip: number,
   strategy: PaymentStrategy
@@ -22,9 +12,6 @@ const formatCheckboxLabel = (
 
 export const formatButtonLabel = (strategy: PaymentStrategy, total: number) =>
   `${strategy.getCurrencySign()}${total}`;
-
-
-export { formatCheckboxLabel };
 
 export type RoundUpAlgorithm = (number: number) => number;
 
@@ -43,9 +30,3 @@ export const formatNumber = (number: number) => parseFloat(number.toPrecision(2)
 export const roundUpToNearestInteger = roundUpToNearestN(1);
 export const roundUpToNearestTen = roundUpToNearestN(2);
 export const roundUpToNearestHundred = roundUpToNearestN(3);
-
-export const algorithmMap = {
-  AU: roundUpToNearestInteger,
-  DK: roundUpToNearestTen,
-  JP: roundUpToNearestHundred
-}

@@ -1,7 +1,7 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import { Payment } from "./Payment";
 import {PaymentStrategy} from "../models/PaymentStrategy";
-import {roundUpToNearestHundred} from "../utils";
+import {roundUpToNearestHundred, roundUpToNearestTen} from "../utils";
 
 describe("Payment", () => {
   it("renders payment title", () => {
@@ -34,7 +34,7 @@ describe("Payment", () => {
     expect(screen.getByText('$20')).toBeInTheDocument();
   })
 
-  describe('japan market', () => {
+  describe('Japan market', () => {
     it('shows correct amount when user selected to donate', () => {
       render(<Payment amount={3312} strategy={new PaymentStrategy("¥", roundUpToNearestHundred)} />);
 
@@ -43,6 +43,18 @@ describe("Payment", () => {
 
       fireEvent.click(select);
       expect(screen.getByText('¥3400')).toBeInTheDocument();
+    })
+  })
+
+  describe('Denmark market', () => {
+    it('shows correct amount when user selected to donate', () => {
+      render(<Payment amount={1.20} strategy={new PaymentStrategy("Kr.", roundUpToNearestTen)} />);
+
+      const select = screen.getByText('I would like to donate Kr.8.8 to charity.');
+      expect(select).toBeInTheDocument();
+
+      fireEvent.click(select);
+      expect(screen.getByText('Kr.10')).toBeInTheDocument();
     })
   })
 

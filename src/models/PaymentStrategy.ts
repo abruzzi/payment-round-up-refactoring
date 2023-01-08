@@ -1,4 +1,4 @@
-import {formatNumber} from "../utils";
+import { calculateTipFor } from "../utils";
 
 type RoundUpStrategy = (number: number) => number;
 
@@ -11,11 +11,6 @@ export class PaymentStrategy {
     this.algorithm = roundUpAlgorithm;
   }
 
-  private calculateTipFor =
-    (calculateRoundUpFor: (amount: number) => number) => (amount: number) => {
-      return formatNumber(calculateRoundUpFor(amount) - amount);
-    };
-
   getCurrencySign(): string {
     return this.currencySign;
   }
@@ -25,6 +20,6 @@ export class PaymentStrategy {
   }
 
   getTip(amount: number): number {
-    return this.calculateTipFor(this.getRoundUpAmount.bind(this))(amount);
+    return calculateTipFor(this.getRoundUpAmount.bind(this))(amount);
   }
 }

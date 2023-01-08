@@ -17,22 +17,20 @@ const convertPaymentMethods = (methods: RemotePaymentMethod[]) => {
   return extended;
 };
 
+const fetchPaymentMethods = async () => {
+  const response = await fetch("https://5a2f495fa871f00012678d70.mockapi.io/api/payment-methods?countryCode=AU");
+  const methods: RemotePaymentMethod[] = await response.json();
+
+  return convertPaymentMethods(methods)
+}
+
 export const usePaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(
     []
   );
 
   useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      const url = "https://online-ordering.com/api/payment-methods";
-
-      const response = await fetch(url);
-      const methods: RemotePaymentMethod[] = await response.json();
-
-      setPaymentMethods(convertPaymentMethods(methods));
-    };
-
-    fetchPaymentMethods();
+    fetchPaymentMethods().then(methods => setPaymentMethods(methods))
   });
 
   return {
